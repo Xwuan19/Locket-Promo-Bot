@@ -12,8 +12,10 @@
 - **Mục tiêu Chế độ 2 (Mode 2: No-DNS):** Kích hoạt gói Locket Gold dạng Promotional (`rc_promo_Gold_custom`) có thời hạn 30 ngày chính chủ thông qua cơ chế tự động hóa Referral / Friend Fund.
 - **Điểm cốt lõi:** Người dùng được cấp quyền Gold trực tiếp trên máy chủ RevenueCat gắn liền với UID của họ, do đó **hoàn toàn KHÔNG CẦN CÀI PROFILE HAY CHẶN DNS**.
 - **Môi trường hoạt động:** 
-  - **Vercel Serverless (Production):** FastAPI (`api/index.py`) + Telegram Webhook (`/api/webhook`) + Web Admin Dashboard (`/admin`).
-  - **Local Development:** Chạy qua `main.py` (Polling).
+  - **Vercel Serverless (Production):** [https://locket-promo-bot.vercel.app](https://locket-promo-bot.vercel.app)
+  - **Telegram Webhook:** `https://locket-promo-bot.vercel.app/api/webhook`
+  - **Telegram Bot Active:** [@xwuantest_bot](https://t.me/xwuantest_bot)
+  - **Web Admin Dashboard:** `https://locket-promo-bot.vercel.app/admin`
 - **Chế độ bảo mật:**
   - **Telegram Bot:** Private Mode — chỉ cho phép duy nhất `ADMIN_ID = 8374108763` sử dụng. Người lạ nhận thông tin liên hệ mua bot: `@zane_le`.
   - **Web Admin Portal (`/admin`):** Bảo vệ bằng `ADMIN_PASSWORD`.

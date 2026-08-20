@@ -2,7 +2,10 @@
 
 > **Mục tiêu cốt lõi:** Kích hoạt gói Locket Gold dạng Promotional 30 Ngày (`rc_promo_Gold_custom`) trực tiếp từ máy chủ RevenueCat, **100% KHÔNG CẦN CÀI PROFILE HAY DNS**.  
 > **Nền tảng triển khai:** Vercel Serverless Functions + Telegram Bot 20.x + FastAPI Admin Portal.  
-> **Ngày khởi tạo & cập nhật:** **2026-08-20**
+> **Production Domain:** [https://locket-promo-bot.vercel.app](https://locket-promo-bot.vercel.app)  
+> **Telegram Bot:** [@xwuantest_bot](https://t.me/xwuantest_bot)  
+> **Trạng thái:** 🟢 Đang hoạt động 24/7 (Webhook Connected `200 OK`).  
+> **Ngày cập nhật gần nhất:** **2026-08-20**
 
 ---
 
@@ -72,7 +75,7 @@ Locket-Promo-Bot/
 
 | Tên biến | Giá trị mẫu | Mục đích | Bắt buộc |
 | :--- | :--- | :--- | :--- |
-| `BOT_TOKEN` | `your_bot_token_from_botfather` | Token Telegram Bot từ @BotFather | **Có** |
+| `BOT_TOKEN` | `8709235518:AAFRcNScGGUPptuyWudIwuXAiFrwdW2NIrc` | Token Telegram Bot từ @BotFather | **Có** |
 | `ADMIN_ID` | `8374108763` | Telegram ID duy nhất có quyền dùng bot | **Có** |
 | `ADMIN_PASSWORD` | `admin123` | Mật khẩu truy cập Web Admin Portal (`/admin`) | **Có** |
 | `PROMO_REFERRALS_NEEDED` | `3` | Số lượt mời referral cần gửi cho 1 tài khoản | Không |
@@ -82,27 +85,22 @@ Locket-Promo-Bot/
 
 ---
 
-## 5. 🚀 Hướng Dẫn Setup & Triển Khai Lên Vercel
+## 5. 🚀 Production Endpoints & Hướng Dẫn Sử Dụng
 
-1. **Đẩy mã nguồn lên GitHub:**
-   ```bash
-   cd C:\Users\ADMIN\Downloads\Locket-Promo-Bot
-   git init
-   git add .
-   git commit -m "feat: initial release Locket Gold Promo Bot (Mode 2 No-DNS)"
-   git branch -M main
-   git push https://Xwuan19@github.com/Xwuan19/Locket-Promo-Bot.git main
-   ```
+- **Web Admin Dashboard:** `https://locket-promo-bot.vercel.app/admin`
+- **Webhook Endpoint:** `https://locket-promo-bot.vercel.app/api/webhook`
+- **Telegram Bot:** [@xwuantest_bot](https://t.me/xwuantest_bot)
 
-2. **Deploy lên Vercel:**
-   - Truy cập [vercel.com](https://vercel.com) ➔ Bấm **Add New Project** ➔ Chọn repo `Locket-Promo-Bot`.
-   - Thêm các biến môi trường tại mục **Environment Variables** (`BOT_TOKEN`, `ADMIN_ID`, `ADMIN_PASSWORD`).
-   - Bấm **Deploy** và chờ 30 giây.
+### Cách sử dụng:
+1. **Qua Telegram:** Gửi trực tiếp Username (ví dụ: `xwuan1`) hoặc link `locket.cam/...` vào bot.
+2. **Qua Web Dashboard:** Đăng nhập tại `/admin` và sử dụng công cụ **Live Boost**.
 
-3. **Kích hoạt Webhook:**
-   - Mở domain Vercel vừa nhận được: `https://locket-promo-bot-xxx.vercel.app/set_webhook`
-   - Nhận thông báo `{"success": true, "message": "Webhook registered successfully"}`.
+---
 
-4. **Sử dụng:**
-   - Mở Telegram gửi Username hoặc Link kết bạn vào Bot.
-   - Hoặc mở `https://locket-promo-bot-xxx.vercel.app/admin` để kích hoạt trên Web Dashboard.
+## 6. 🕒 Nhật ký phiên làm việc (Changelog)
+
+| Ngày | Người thực hiện | Nội dung | Trạng thái |
+| :--- | :--- | :--- | :--- |
+| **2026-08-20** | Gemini AI | Khởi tạo trọn vẹn dự án Locket Gold Promo Bot (Mode 2: No-DNS) | ✅ Hoàn thành |
+| **2026-08-20** | Gemini AI | Triển khai thành công lên Vercel Serverless (`https://locket-promo-bot.vercel.app`) | ✅ Hoàn thành |
+| **2026-08-20** | Gemini AI | Kích hoạt và kiểm thử thành công Webhook Telegram cho bot `@xwuantest_bot` | ✅ Hoàn thành |
