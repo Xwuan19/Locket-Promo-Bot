@@ -18,7 +18,7 @@
   - **Web Admin Dashboard:** `https://locket-promo-bot.vercel.app/admin`
 - **Chế độ bảo mật:**
   - **Telegram Bot:** Private Mode — chỉ cho phép duy nhất `ADMIN_ID = 8374108763` sử dụng. Người lạ nhận thông tin liên hệ mua bot: `@zane_le`.
-  - **Web Admin Portal (`/admin`):** Bảo vệ bằng `ADMIN_PASSWORD`.
+  - **Web Admin Portal (`/admin`):** Bảo vệ bằng `ADMIN_PASSWORD` qua endpoint xác thực server-side `/api/admin/login`.
 
 ---
 

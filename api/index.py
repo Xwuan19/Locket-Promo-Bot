@@ -77,6 +77,20 @@ async def telegram_webhook(request: Request):
         logger.error("Webhook processing error: %s", e)
         return Response(status_code=200)
 
+@app.post("/api/admin/login")
+async def api_admin_login(request: Request):
+    try:
+        body = await request.json()
+        password = body.get("password", "").strip()
+        if password == ADMIN_PASSWORD:
+            return JSONResponse({"success": True, "message": "Đăng nhập thành công"})
+        return JSONResponse({
+            "success": False, 
+            "message": "Mật khẩu không chính xác! (Lưu ý: Nếu bạn vừa đổi trên Vercel Settings, hãy vào tab Deployments bấm Redeploy để Vercel cập nhật)"
+        }, status_code=401)
+    except Exception as e:
+        return JSONResponse({"success": False, "message": str(e)}, status_code=500)
+
 @app.get("/admin", response_class=HTMLResponse)
 async def admin_portal():
     html_content = """
@@ -90,13 +104,17 @@ async def admin_portal():
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     </head>
     <body class="bg-slate-950 text-slate-100 min-h-screen font-sans">
-        <div id="login-modal" class="fixed inset-0 bg-slate-950/90 backdrop-blur flex items-center justify-center p-4 z-50">
+        <!-- Login Modal -->
+        <div id="login-modal" class="fixed inset-0 bg-slate-950/95 backdrop-blur flex items-center justify-center p-4 z-50">
             <div class="bg-slate-900 border border-slate-800 p-8 rounded-2xl max-w-sm w-full text-center shadow-2xl">
                 <div class="text-4xl text-amber-400 mb-3"><i class="fa-solid fa-shield-halved"></i></div>
-                <h2 class="text-xl font-bold mb-2">Đăng Nhập Quản Trị</h2>
-                <p class="text-slate-400 text-xs mb-4">Nhập mật khẩu quản trị ADMIN_PASSWORD</p>
-                <input id="admin-pass" type="password" placeholder="Mật khẩu..." class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2 text-sm text-center mb-4 focus:outline-none focus:border-amber-400">
-                <button onclick="login()" class="w-full py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-xl text-sm transition">Đăng Nhập</button>
+                <h2 class="text-xl font-bold mb-1">Đăng Nhập Quản Trị</h2>
+                <p class="text-slate-400 text-xs mb-4">Nhập mật khẩu ADMIN_PASSWORD để tiếp tục</p>
+                
+                <div id="login-error" class="hidden mb-3 p-2.5 bg-rose-500/10 border border-rose-500/30 rounded-xl text-rose-400 text-xs text-left leading-relaxed"></div>
+                
+                <input id="admin-pass" type="password" placeholder="Nhập mật khẩu..." onkeydown="if(event.key==='Enter') login()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-center mb-4 focus:outline-none focus:border-amber-400">
+                <button onclick="login()" id="login-btn" class="w-full py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-xl text-sm transition">Đăng Nhập</button>
             </div>
         </div>
 
@@ -112,6 +130,7 @@ async def admin_portal():
                 <button onclick="logout()" class="text-xs bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-lg text-slate-300">Đăng Xuất</button>
             </div>
 
+            <!-- Stats Grid -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                 <div class="bg-slate-900/60 border border-slate-800 p-4 rounded-xl">
                     <div class="text-xs text-slate-400">Tổng Đơn Kích Hoạt</div>
@@ -127,24 +146,26 @@ async def admin_portal():
                 </div>
             </div>
 
+            <!-- Live Boost Section -->
             <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl mb-6 shadow-xl">
                 <h3 class="text-base font-bold text-amber-400 mb-2 flex items-center gap-2">
                     <i class="fa-solid fa-bolt"></i> Bơm Locket Gold Promo Trực Tiếp (Live Boost)
                 </h3>
                 <p class="text-xs text-slate-400 mb-4">Nhập Username hoặc Link kết bạn Locket để tự động kích hoạt 30 ngày Gold No-DNS.</p>
                 <div class="flex gap-2 mb-4">
-                    <input id="boost-input" type="text" placeholder="Nhập username (ví dụ: xwuan1) hoặc link locket.cam/..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-amber-400">
+                    <input id="boost-input" type="text" onkeydown="if(event.key==='Enter') executeBoost()" placeholder="Nhập username (ví dụ: xwuan1) hoặc link locket.cam/..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-amber-400">
                     <button onclick="executeBoost()" id="boost-btn" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-6 py-2.5 rounded-xl text-sm transition">⚡ Bơm Gold</button>
                 </div>
                 <div id="boost-log" class="hidden bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs font-mono text-slate-300"></div>
             </div>
 
+            <!-- Live Check Section -->
             <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl">
                 <h3 class="text-base font-bold text-cyan-400 mb-2 flex items-center gap-2">
                     <i class="fa-solid fa-magnifying-glass"></i> Kiểm Tra Trạng Thái RevenueCat (Live Check)
                 </h3>
                 <div class="flex gap-2 mb-4">
-                    <input id="check-input" type="text" placeholder="Nhập username hoặc UID..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-cyan-400">
+                    <input id="check-input" type="text" onkeydown="if(event.key==='Enter') executeCheck()" placeholder="Nhập username hoặc UID..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-cyan-400">
                     <button onclick="executeCheck()" class="bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-bold px-6 py-2.5 rounded-xl text-sm transition">Kiểm Tra</button>
                 </div>
                 <div id="check-log" class="hidden bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs font-mono text-slate-300"></div>
@@ -152,12 +173,44 @@ async def admin_portal():
         </div>
 
         <script>
-            function login() {
-                const pass = document.getElementById('admin-pass').value;
-                if (!pass) return alert('Vui lòng nhập mật khẩu!');
-                sessionStorage.setItem('admin_pass', pass);
-                document.getElementById('login-modal').classList.add('hidden');
-                loadStats();
+            async function login() {
+                const pass = document.getElementById('admin-pass').value.trim();
+                const errDiv = document.getElementById('login-error');
+                const btn = document.getElementById('login-btn');
+                
+                if (!pass) {
+                    errDiv.innerText = 'Vui lòng nhập mật khẩu quản trị!';
+                    errDiv.classList.remove('hidden');
+                    return;
+                }
+
+                btn.disabled = true;
+                btn.innerText = 'Đang xác thực...';
+                errDiv.classList.add('hidden');
+
+                try {
+                    const res = await fetch('/api/admin/login', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({password: pass})
+                    });
+                    const d = await res.json();
+                    
+                    if (d.success) {
+                        sessionStorage.setItem('admin_pass', pass);
+                        document.getElementById('login-modal').classList.add('hidden');
+                        loadStats();
+                    } else {
+                        errDiv.innerHTML = '❌ ' + (d.message || 'Mật khẩu không chính xác!');
+                        errDiv.classList.remove('hidden');
+                    }
+                } catch(e) {
+                    errDiv.innerText = '❌ Lỗi kết nối tới máy chủ: ' + e.message;
+                    errDiv.classList.remove('hidden');
+                } finally {
+                    btn.disabled = false;
+                    btn.innerText = 'Đăng Nhập';
+                }
             }
 
             function logout() {

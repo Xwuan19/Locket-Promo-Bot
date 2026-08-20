@@ -104,3 +104,4 @@ Locket-Promo-Bot/
 | **2026-08-20** | Gemini AI | Khởi tạo trọn vẹn dự án Locket Gold Promo Bot (Mode 2: No-DNS) | ✅ Hoàn thành |
 | **2026-08-20** | Gemini AI | Triển khai thành công lên Vercel Serverless (`https://locket-promo-bot.vercel.app`) | ✅ Hoàn thành |
 | **2026-08-20** | Gemini AI | Kích hoạt và kiểm thử thành công Webhook Telegram cho bot `@xwuantest_bot` | ✅ Hoàn thành |
+| **2026-08-20** | Gemini AI | Nâng cấp xác thực đăng nhập Admin server-side (`/api/admin/login`), hỗ trợ phím Enter và hướng dẫn Redeploy Vercel | ✅ Hoàn thành |
