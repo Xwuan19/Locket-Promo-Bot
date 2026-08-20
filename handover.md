@@ -107,3 +107,4 @@ Locket-Promo-Bot/
 | **2026-08-20** | Gemini AI | Nâng cấp xác thực đăng nhập Admin server-side (`/api/admin/login`), hỗ trợ phím Enter và hướng dẫn Redeploy Vercel | ✅ Hoàn thành |
 | **2026-08-20** | Gemini AI | Khắc phục triệt để lỗi xung đột CSS Tailwind modal login: Dùng inline style `display: none` / `display: flex` thay vì class `hidden` bị class `flex` ghi đè | ✅ Hoàn thành |
 | **2026-08-20** | Gemini AI | Fix triệt để lỗi JavaScript SyntaxError trên Web Admin do ký tự xuống dòng r''' trong Python multiline string | ✅ Hoàn thành |
+| **2026-08-20** | Gemini AI | Nâng cấp thuật toán phân giải UID 28 ký tự từ link locket.cam và tích hợp Golden Baseline Token Injection Engine | ✅ Hoàn thành |

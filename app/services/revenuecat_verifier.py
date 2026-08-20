@@ -3,6 +3,7 @@ import logging
 from datetime import datetime, timezone, timedelta
 from typing import Dict, Any
 from app.config import REVENUECAT_AUTH_BEARER, REVENUECAT_API_HOST
+from app.services.locket_resolver import resolve_locket_target
 
 logger = logging.getLogger(__name__)
 
@@ -17,10 +18,14 @@ def format_rc_date(iso_str: str) -> str:
     except Exception:
         return iso_str
 
-async def check_revenuecat_status(app_user_id: str) -> Dict[str, Any]:
+async def check_revenuecat_status(identifier: str) -> Dict[str, Any]:
     """
-    Kiểm tra live subscriber trên RevenueCat API
+    Kiểm tra live subscriber trên RevenueCat API (Hỗ trợ cả Username, Link locket.cam và UID 28 ký tự)
     """
+    target = await resolve_locket_target(identifier)
+    app_user_id = target.get("uid") or identifier
+    username = target.get("username") or identifier
+
     url = f"{REVENUECAT_API_HOST}/v1/subscribers/{app_user_id}"
     headers = {
         "Authorization": REVENUECAT_AUTH_BEARER,
@@ -56,6 +61,8 @@ async def check_revenuecat_status(app_user_id: str) -> Dict[str, Any]:
 
                         return {
                             "has_gold": True,
+                            "target_username": username,
+                            "target_uid": app_user_id,
                             "product_identifier": prod_id,
                             "store": "promotional" if is_promo else "app_store",
                             "is_promo": is_promo,
@@ -68,12 +75,16 @@ async def check_revenuecat_status(app_user_id: str) -> Dict[str, Any]:
                     else:
                         return {
                             "has_gold": False,
+                            "target_username": username,
+                            "target_uid": app_user_id,
                             "message": "Tài khoản hiện chưa có gói Gold",
                             "original_app_user_id": subscriber.get("original_app_user_id", app_user_id)
                         }
                 else:
                     return {
                         "has_gold": False,
+                        "target_username": username,
+                        "target_uid": app_user_id,
                         "error_code": resp.status,
                         "message": f"RevenueCat phản hồi mã {resp.status}"
                     }
@@ -81,6 +92,8 @@ async def check_revenuecat_status(app_user_id: str) -> Dict[str, Any]:
         logger.error("RevenueCat status error: %s", e)
         return {
             "has_gold": False,
+            "target_username": username,
+            "target_uid": app_user_id,
             "error": str(e),
             "message": "Không thể kết nối RevenueCat API"
         }
