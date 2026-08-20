@@ -31,28 +31,26 @@ async def on_shutdown():
 
 @app.get("/")
 async def root():
-    return HTMLResponse("""
-    <!DOCTYPE html>
-    <html lang="vi">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Locket Gold Promo Serverless Bot</title>
-        <script src="https://cdn.tailwindcss.com"></script>
-    </head>
-    <body class="bg-slate-950 text-white flex items-center justify-center min-h-screen">
-        <div class="bg-slate-900 border border-slate-800 p-8 rounded-2xl max-w-md w-full text-center shadow-2xl">
-            <div class="text-5xl mb-4">👑</div>
-            <h1 class="text-2xl font-bold text-amber-400 mb-2">Locket Gold Promo Bot</h1>
-            <p class="text-slate-400 text-sm mb-6">Hệ thống kích hoạt Locket Gold Chế độ 2 (100% No-DNS) hoạt động 24/7 trên Vercel Serverless.</p>
-            <div class="space-y-3">
-                <a href="/admin" class="block w-full py-3 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-xl transition">Mở Web Admin Portal</a>
-                <a href="/set_webhook" class="block w-full py-3 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-xl transition">⚡ Kích Hoạt Telegram Webhook</a>
-            </div>
+    return HTMLResponse("""<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Locket Gold Promo Serverless Bot</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-950 text-white flex items-center justify-center min-h-screen">
+    <div class="bg-slate-900 border border-slate-800 p-8 rounded-2xl max-w-md w-full text-center shadow-2xl">
+        <div class="text-5xl mb-4">👑</div>
+        <h1 class="text-2xl font-bold text-amber-400 mb-2">Locket Gold Promo Bot</h1>
+        <p class="text-slate-400 text-sm mb-6">Hệ thống kích hoạt Locket Gold Chế độ 2 (100% No-DNS) hoạt động 24/7 trên Vercel Serverless.</p>
+        <div class="space-y-3">
+            <a href="/admin" class="block w-full py-3 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-xl transition">Mở Web Admin Portal</a>
+            <a href="/set_webhook" class="block w-full py-3 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-xl transition">⚡ Kích Hoạt Telegram Webhook</a>
         </div>
-    </body>
-    </html>
-    """)
+    </div>
+</body>
+</html>""")
 
 @app.get("/set_webhook")
 async def set_webhook(request: Request):
@@ -93,214 +91,212 @@ async def api_admin_login(request: Request):
 
 @app.get("/admin", response_class=HTMLResponse)
 async def admin_portal():
-    html_content = """
-    <!DOCTYPE html>
-    <html lang="vi">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Admin Portal - Locket Gold Promo (No-DNS)</title>
-        <script src="https://cdn.tailwindcss.com"></script>
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    </head>
-    <body class="bg-slate-950 text-slate-100 min-h-screen font-sans">
-        <!-- Login Modal -->
-        <div id="login-modal" class="fixed inset-0 bg-slate-950/95 backdrop-blur flex items-center justify-center p-4 z-50">
-            <div class="bg-slate-900 border border-slate-800 p-8 rounded-2xl max-w-sm w-full text-center shadow-2xl">
-                <div class="text-4xl text-amber-400 mb-3"><i class="fa-solid fa-shield-halved"></i></div>
-                <h2 class="text-xl font-bold mb-1">Đăng Nhập Quản Trị</h2>
-                <p class="text-slate-400 text-xs mb-4">Nhập mật khẩu ADMIN_PASSWORD để tiếp tục</p>
-                
-                <div id="login-error" style="display: none;" class="mb-3 p-2.5 bg-rose-500/10 border border-rose-500/30 rounded-xl text-rose-400 text-xs text-left leading-relaxed"></div>
-                
-                <input id="admin-pass" type="password" placeholder="Nhập mật khẩu..." onkeydown="if(event.key==='Enter') login()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-center mb-4 focus:outline-none focus:border-amber-400">
-                <button onclick="login()" id="login-btn" class="w-full py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-xl text-sm transition">Đăng Nhập</button>
+    html_content = r'''<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal - Locket Gold Promo (No-DNS)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen font-sans">
+    <!-- Login Modal -->
+    <div id="login-modal" style="display: flex;" class="fixed inset-0 bg-slate-950/95 backdrop-blur items-center justify-center p-4 z-50">
+        <div class="bg-slate-900 border border-slate-800 p-8 rounded-2xl max-w-sm w-full text-center shadow-2xl">
+            <div class="text-4xl text-amber-400 mb-3"><i class="fa-solid fa-shield-halved"></i></div>
+            <h2 class="text-xl font-bold mb-1">Đăng Nhập Quản Trị</h2>
+            <p class="text-slate-400 text-xs mb-4">Nhập mật khẩu ADMIN_PASSWORD để tiếp tục</p>
+            
+            <div id="login-error" style="display: none;" class="mb-3 p-2.5 bg-rose-500/10 border border-rose-500/30 rounded-xl text-rose-400 text-xs text-left leading-relaxed"></div>
+            
+            <input id="admin-pass" type="password" placeholder="Nhập mật khẩu..." onkeydown="if(event.key==='Enter') login()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-center mb-4 focus:outline-none focus:border-amber-400">
+            <button onclick="login()" id="login-btn" class="w-full py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-xl text-sm transition">Đăng Nhập</button>
+        </div>
+    </div>
+
+    <div class="max-w-5xl mx-auto p-4 md:p-8">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-6">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-xl">👑</div>
+                <div>
+                    <h1 class="text-xl font-bold">Locket Gold Promo Dashboard</h1>
+                    <p class="text-xs text-slate-400">Chế độ 2: Referral & Promo Farm (100% No-DNS)</p>
+                </div>
+            </div>
+            <button onclick="logout()" class="text-xs bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-lg text-slate-300">Đăng Xuất</button>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div class="bg-slate-900/60 border border-slate-800 p-4 rounded-xl">
+                <div class="text-xs text-slate-400">Tổng Đơn Kích Hoạt</div>
+                <div id="stat-total" class="text-2xl font-bold text-amber-400 mt-1">--</div>
+            </div>
+            <div class="bg-slate-900/60 border border-slate-800 p-4 rounded-xl">
+                <div class="text-xs text-slate-400">Kích Hoạt Thành Công</div>
+                <div id="stat-success" class="text-2xl font-bold text-emerald-400 mt-1">--</div>
+            </div>
+            <div class="bg-slate-900/60 border border-slate-800 p-4 rounded-xl">
+                <div class="text-xs text-slate-400">Cơ Chế Bảo Mật</div>
+                <div class="text-2xl font-bold text-cyan-400 mt-1">No-DNS 100%</div>
             </div>
         </div>
 
-        <div class="max-w-5xl mx-auto p-4 md:p-8">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-6">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-xl">👑</div>
-                    <div>
-                        <h1 class="text-xl font-bold">Locket Gold Promo Dashboard</h1>
-                        <p class="text-xs text-slate-400">Chế độ 2: Referral & Promo Farm (100% No-DNS)</p>
-                    </div>
-                </div>
-                <button onclick="logout()" class="text-xs bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-lg text-slate-300">Đăng Xuất</button>
+        <!-- Live Boost Section -->
+        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl mb-6 shadow-xl">
+            <h3 class="text-base font-bold text-amber-400 mb-2 flex items-center gap-2">
+                <i class="fa-solid fa-bolt"></i> Bơm Locket Gold Promo Trực Tiếp (Live Boost)
+            </h3>
+            <p class="text-xs text-slate-400 mb-4">Nhập Username hoặc Link kết bạn Locket để tự động kích hoạt 30 ngày Gold No-DNS.</p>
+            <div class="flex gap-2 mb-4">
+                <input id="boost-input" type="text" onkeydown="if(event.key==='Enter') executeBoost()" placeholder="Nhập username (ví dụ: xwuan1) hoặc link locket.cam/..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-amber-400">
+                <button onclick="executeBoost()" id="boost-btn" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-6 py-2.5 rounded-xl text-sm transition">⚡ Bơm Gold</button>
             </div>
-
-            <!-- Stats Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                <div class="bg-slate-900/60 border border-slate-800 p-4 rounded-xl">
-                    <div class="text-xs text-slate-400">Tổng Đơn Kích Hoạt</div>
-                    <div id="stat-total" class="text-2xl font-bold text-amber-400 mt-1">--</div>
-                </div>
-                <div class="bg-slate-900/60 border border-slate-800 p-4 rounded-xl">
-                    <div class="text-xs text-slate-400">Kích Hoạt Thành Công</div>
-                    <div id="stat-success" class="text-2xl font-bold text-emerald-400 mt-1">--</div>
-                </div>
-                <div class="bg-slate-900/60 border border-slate-800 p-4 rounded-xl">
-                    <div class="text-xs text-slate-400">Cơ Chế Bảo Mật</div>
-                    <div class="text-2xl font-bold text-cyan-400 mt-1">No-DNS 100%</div>
-                </div>
-            </div>
-
-            <!-- Live Boost Section -->
-            <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl mb-6 shadow-xl">
-                <h3 class="text-base font-bold text-amber-400 mb-2 flex items-center gap-2">
-                    <i class="fa-solid fa-bolt"></i> Bơm Locket Gold Promo Trực Tiếp (Live Boost)
-                </h3>
-                <p class="text-xs text-slate-400 mb-4">Nhập Username hoặc Link kết bạn Locket để tự động kích hoạt 30 ngày Gold No-DNS.</p>
-                <div class="flex gap-2 mb-4">
-                    <input id="boost-input" type="text" onkeydown="if(event.key==='Enter') executeBoost()" placeholder="Nhập username (ví dụ: xwuan1) hoặc link locket.cam/..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-amber-400">
-                    <button onclick="executeBoost()" id="boost-btn" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-6 py-2.5 rounded-xl text-sm transition">⚡ Bơm Gold</button>
-                </div>
-                <div id="boost-log" style="display: none;" class="bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs font-mono text-slate-300"></div>
-            </div>
-
-            <!-- Live Check Section -->
-            <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl">
-                <h3 class="text-base font-bold text-cyan-400 mb-2 flex items-center gap-2">
-                    <i class="fa-solid fa-magnifying-glass"></i> Kiểm Tra Trạng Thái RevenueCat (Live Check)
-                </h3>
-                <div class="flex gap-2 mb-4">
-                    <input id="check-input" type="text" onkeydown="if(event.key==='Enter') executeCheck()" placeholder="Nhập username hoặc UID..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-cyan-400">
-                    <button onclick="executeCheck()" class="bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-bold px-6 py-2.5 rounded-xl text-sm transition">Kiểm Tra</button>
-                </div>
-                <div id="check-log" style="display: none;" class="bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs font-mono text-slate-300"></div>
-            </div>
+            <div id="boost-log" style="display: none;" class="bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs font-mono text-slate-300"></div>
         </div>
 
-        <script>
-            async function login() {
-                const pass = document.getElementById('admin-pass').value.trim();
-                const errDiv = document.getElementById('login-error');
-                const btn = document.getElementById('login-btn');
+        <!-- Live Check Section -->
+        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl shadow-xl">
+            <h3 class="text-base font-bold text-cyan-400 mb-2 flex items-center gap-2">
+                <i class="fa-solid fa-magnifying-glass"></i> Kiểm Tra Trạng Thái RevenueCat (Live Check)
+            </h3>
+            <div class="flex gap-2 mb-4">
+                <input id="check-input" type="text" onkeydown="if(event.key==='Enter') executeCheck()" placeholder="Nhập username hoặc UID..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-cyan-400">
+                <button onclick="executeCheck()" class="bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-bold px-6 py-2.5 rounded-xl text-sm transition">Kiểm Tra</button>
+            </div>
+            <div id="check-log" style="display: none;" class="bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs font-mono text-slate-300"></div>
+        </div>
+    </div>
+
+    <script>
+        async function login() {
+            const pass = document.getElementById('admin-pass').value.trim();
+            const errDiv = document.getElementById('login-error');
+            const btn = document.getElementById('login-btn');
+            
+            if (!pass) {
+                errDiv.innerText = 'Vui lòng nhập mật khẩu quản trị!';
+                errDiv.style.display = 'block';
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerText = 'Đang xác thực...';
+            errDiv.style.display = 'none';
+
+            try {
+                const res = await fetch('/api/admin/login', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({password: pass})
+                });
+                const d = await res.json();
                 
-                if (!pass) {
-                    errDiv.innerText = 'Vui lòng nhập mật khẩu quản trị!';
+                if (d.success) {
+                    sessionStorage.setItem('admin_pass', pass);
+                    localStorage.setItem('admin_pass', pass);
+                    document.getElementById('login-modal').style.display = 'none';
+                    loadStats();
+                } else {
+                    errDiv.innerHTML = '❌ ' + (d.message || 'Mật khẩu không chính xác!');
                     errDiv.style.display = 'block';
-                    return;
                 }
+            } catch(e) {
+                errDiv.innerText = '❌ Lỗi kết nối tới máy chủ: ' + e.message;
+                errDiv.style.display = 'block';
+            } finally {
+                btn.disabled = false;
+                btn.innerText = 'Đăng Nhập';
+            }
+        }
 
-                btn.disabled = true;
-                btn.innerText = 'Đang xác thực...';
-                errDiv.style.display = 'none';
+        function logout() {
+            sessionStorage.removeItem('admin_pass');
+            localStorage.removeItem('admin_pass');
+            document.getElementById('login-modal').style.display = 'flex';
+            document.getElementById('admin-pass').value = '';
+            document.getElementById('admin-pass').focus();
+        }
 
+        (async function checkSavedLogin() {
+            const saved = sessionStorage.getItem('admin_pass') || localStorage.getItem('admin_pass');
+            if (saved) {
                 try {
                     const res = await fetch('/api/admin/login', {
                         method: 'POST',
                         headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({password: pass})
+                        body: JSON.stringify({password: saved})
                     });
                     const d = await res.json();
-                    
                     if (d.success) {
-                        sessionStorage.setItem('admin_pass', pass);
-                        localStorage.setItem('admin_pass', pass);
                         document.getElementById('login-modal').style.display = 'none';
                         loadStats();
-                    } else {
-                        errDiv.innerHTML = '❌ ' + (d.message || 'Mật khẩu không chính xác!');
-                        errDiv.style.display = 'block';
+                        return;
                     }
-                } catch(e) {
-                    errDiv.innerText = '❌ Lỗi kết nối tới máy chủ: ' + e.message;
-                    errDiv.style.display = 'block';
-                } finally {
-                    btn.disabled = false;
-                    btn.innerText = 'Đăng Nhập';
-                }
-            }
-
-            function logout() {
-                sessionStorage.removeItem('admin_pass');
-                localStorage.removeItem('admin_pass');
-                document.getElementById('login-modal').style.display = 'flex';
-                document.getElementById('admin-pass').value = '';
-                document.getElementById('admin-pass').focus();
-            }
-
-            window.addEventListener('DOMContentLoaded', async () => {
-                const saved = sessionStorage.getItem('admin_pass') || localStorage.getItem('admin_pass');
-                if (saved) {
-                    try {
-                        const res = await fetch('/api/admin/login', {
-                            method: 'POST',
-                            headers: {'Content-Type': 'application/json'},
-                            body: JSON.stringify({password: saved})
-                        });
-                        const d = await res.json();
-                        if (d.success) {
-                            document.getElementById('login-modal').style.display = 'none';
-                            loadStats();
-                            return;
-                        }
-                    } catch(e) {}
-                }
-                document.getElementById('login-modal').style.display = 'flex';
-            });
-
-            async function loadStats() {
-                try {
-                    const res = await fetch('/api/admin/stats');
-                    const d = await res.json();
-                    document.getElementById('stat-total').innerText = d.total_orders || 0;
-                    document.getElementById('stat-success').innerText = d.success_orders || 0;
                 } catch(e) {}
             }
+            document.getElementById('login-modal').style.display = 'flex';
+        })();
 
-            async function executeBoost() {
-                const input = document.getElementById('boost-input').value.trim();
-                if (!input) return alert('Vui lòng nhập username hoặc link!');
-                const btn = document.getElementById('boost-btn');
-                const log = document.getElementById('boost-log');
-                btn.disabled = true;
-                btn.innerText = 'Đang xử lý...';
-                log.style.display = 'block';
-                log.innerHTML = '⏳ Bắt đầu tiến trình Promo Boost...\n';
+        async function loadStats() {
+            try {
+                const res = await fetch('/api/admin/stats');
+                const d = await res.json();
+                document.getElementById('stat-total').innerText = d.total_orders || 0;
+                document.getElementById('stat-success').innerText = d.success_orders || 0;
+            } catch(e) {}
+        }
 
-                try {
-                    const res = await fetch('/api/admin/boost', {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({identifier: input})
-                    });
-                    const d = await res.json();
-                    if (d.success) {
-                        log.innerHTML += `\n✅ KÍCH HOẠT THÀNH CÔNG!\n👤 User: ${d.target_username}\n🆔 UID: ${d.target_uid}\n🎁 Gói: ${d.product_identifier}\n⏳ Hạn dùng: ${d.expires_date}\n🛡️ Tình trạng: 🟢 100% No-DNS!`;
-                        loadStats();
-                    } else {
-                        log.innerHTML += `\n❌ THẤT BÀI: ${d.message || 'Lỗi không xác định'}`;
-                    }
-                } catch(e) {
-                    log.innerHTML += `\n❌ Lỗi kết nối: ${e.message}`;
-                } finally {
-                    btn.disabled = false;
-                    btn.innerText = '⚡ Bơm Gold';
+        async function executeBoost() {
+            const input = document.getElementById('boost-input').value.trim();
+            if (!input) return alert('Vui lòng nhập username hoặc link!');
+            const btn = document.getElementById('boost-btn');
+            const log = document.getElementById('boost-log');
+            btn.disabled = true;
+            btn.innerText = 'Đang xử lý...';
+            log.style.display = 'block';
+            log.innerText = '⏳ Bắt đầu tiến trình Promo Boost...\n';
+
+            try {
+                const res = await fetch('/api/admin/boost', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({identifier: input})
+                });
+                const d = await res.json();
+                if (d.success) {
+                    log.innerText += '\n✅ KÍCH HOẠT THÀNH CÔNG!\n👤 User: ' + d.target_username + '\n🆔 UID: ' + d.target_uid + '\n🎁 Gói: ' + d.product_identifier + '\n⏳ Hạn dùng: ' + d.expires_date + '\n🛡️ Tình trạng: 🟢 100% No-DNS!';
+                    loadStats();
+                } else {
+                    log.innerText += '\n❌ THẤT BÀI: ' + (d.message || 'Lỗi không xác định');
                 }
+            } catch(e) {
+                log.innerText += '\n❌ Lỗi kết nối: ' + e.message;
+            } finally {
+                btn.disabled = false;
+                btn.innerText = '⚡ Bơm Gold';
             }
+        }
 
-            async function executeCheck() {
-                const input = document.getElementById('check-input').value.trim();
-                if (!input) return alert('Vui lòng nhập username hoặc UID!');
-                const log = document.getElementById('check-log');
-                log.style.display = 'block';
-                log.innerHTML = '⏳ Đang tra cứu RevenueCat...\n';
+        async function executeCheck() {
+            const input = document.getElementById('check-input').value.trim();
+            if (!input) return alert('Vui lòng nhập username hoặc UID!');
+            const log = document.getElementById('check-log');
+            log.style.display = 'block';
+            log.innerText = '⏳ Đang tra cứu RevenueCat...\n';
 
-                try {
-                    const res = await fetch('/api/admin/check/' + encodeURIComponent(input));
-                    const d = await res.json();
-                    log.innerHTML = JSON.stringify(d, null, 2);
-                } catch(e) {
-                    log.innerHTML = '❌ Lỗi: ' + e.message;
-                }
+            try {
+                const res = await fetch('/api/admin/check/' + encodeURIComponent(input));
+                const d = await res.json();
+                log.innerText = JSON.stringify(d, null, 2);
+            } catch(e) {
+                log.innerText = '❌ Lỗi: ' + e.message;
             }
-        </script>
-    </body>
-    </html>
-    """
+        }
+    </script>
+</body>
+</html>'''
     return HTMLResponse(content=html_content)
 
 @app.post("/api/admin/boost")
