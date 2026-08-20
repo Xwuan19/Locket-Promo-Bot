@@ -111,7 +111,7 @@ async def admin_portal():
                 <h2 class="text-xl font-bold mb-1">Đăng Nhập Quản Trị</h2>
                 <p class="text-slate-400 text-xs mb-4">Nhập mật khẩu ADMIN_PASSWORD để tiếp tục</p>
                 
-                <div id="login-error" class="hidden mb-3 p-2.5 bg-rose-500/10 border border-rose-500/30 rounded-xl text-rose-400 text-xs text-left leading-relaxed"></div>
+                <div id="login-error" style="display: none;" class="mb-3 p-2.5 bg-rose-500/10 border border-rose-500/30 rounded-xl text-rose-400 text-xs text-left leading-relaxed"></div>
                 
                 <input id="admin-pass" type="password" placeholder="Nhập mật khẩu..." onkeydown="if(event.key==='Enter') login()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-center mb-4 focus:outline-none focus:border-amber-400">
                 <button onclick="login()" id="login-btn" class="w-full py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-xl text-sm transition">Đăng Nhập</button>
@@ -156,7 +156,7 @@ async def admin_portal():
                     <input id="boost-input" type="text" onkeydown="if(event.key==='Enter') executeBoost()" placeholder="Nhập username (ví dụ: xwuan1) hoặc link locket.cam/..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-amber-400">
                     <button onclick="executeBoost()" id="boost-btn" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-6 py-2.5 rounded-xl text-sm transition">⚡ Bơm Gold</button>
                 </div>
-                <div id="boost-log" class="hidden bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs font-mono text-slate-300"></div>
+                <div id="boost-log" style="display: none;" class="bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs font-mono text-slate-300"></div>
             </div>
 
             <!-- Live Check Section -->
@@ -168,7 +168,7 @@ async def admin_portal():
                     <input id="check-input" type="text" onkeydown="if(event.key==='Enter') executeCheck()" placeholder="Nhập username hoặc UID..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-cyan-400">
                     <button onclick="executeCheck()" class="bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-bold px-6 py-2.5 rounded-xl text-sm transition">Kiểm Tra</button>
                 </div>
-                <div id="check-log" class="hidden bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs font-mono text-slate-300"></div>
+                <div id="check-log" style="display: none;" class="bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs font-mono text-slate-300"></div>
             </div>
         </div>
 
@@ -180,13 +180,13 @@ async def admin_portal():
                 
                 if (!pass) {
                     errDiv.innerText = 'Vui lòng nhập mật khẩu quản trị!';
-                    errDiv.classList.remove('hidden');
+                    errDiv.style.display = 'block';
                     return;
                 }
 
                 btn.disabled = true;
                 btn.innerText = 'Đang xác thực...';
-                errDiv.classList.add('hidden');
+                errDiv.style.display = 'none';
 
                 try {
                     const res = await fetch('/api/admin/login', {
@@ -198,15 +198,16 @@ async def admin_portal():
                     
                     if (d.success) {
                         sessionStorage.setItem('admin_pass', pass);
-                        document.getElementById('login-modal').classList.add('hidden');
+                        localStorage.setItem('admin_pass', pass);
+                        document.getElementById('login-modal').style.display = 'none';
                         loadStats();
                     } else {
                         errDiv.innerHTML = '❌ ' + (d.message || 'Mật khẩu không chính xác!');
-                        errDiv.classList.remove('hidden');
+                        errDiv.style.display = 'block';
                     }
                 } catch(e) {
                     errDiv.innerText = '❌ Lỗi kết nối tới máy chủ: ' + e.message;
-                    errDiv.classList.remove('hidden');
+                    errDiv.style.display = 'block';
                 } finally {
                     btn.disabled = false;
                     btn.innerText = 'Đăng Nhập';
@@ -215,13 +216,31 @@ async def admin_portal():
 
             function logout() {
                 sessionStorage.removeItem('admin_pass');
-                location.reload();
+                localStorage.removeItem('admin_pass');
+                document.getElementById('login-modal').style.display = 'flex';
+                document.getElementById('admin-pass').value = '';
+                document.getElementById('admin-pass').focus();
             }
 
-            if (sessionStorage.getItem('admin_pass')) {
-                document.getElementById('login-modal').classList.add('hidden');
-                loadStats();
-            }
+            window.addEventListener('DOMContentLoaded', async () => {
+                const saved = sessionStorage.getItem('admin_pass') || localStorage.getItem('admin_pass');
+                if (saved) {
+                    try {
+                        const res = await fetch('/api/admin/login', {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify({password: saved})
+                        });
+                        const d = await res.json();
+                        if (d.success) {
+                            document.getElementById('login-modal').style.display = 'none';
+                            loadStats();
+                            return;
+                        }
+                    } catch(e) {}
+                }
+                document.getElementById('login-modal').style.display = 'flex';
+            });
 
             async function loadStats() {
                 try {
@@ -239,7 +258,7 @@ async def admin_portal():
                 const log = document.getElementById('boost-log');
                 btn.disabled = true;
                 btn.innerText = 'Đang xử lý...';
-                log.classList.remove('hidden');
+                log.style.display = 'block';
                 log.innerHTML = '⏳ Bắt đầu tiến trình Promo Boost...\n';
 
                 try {
@@ -267,7 +286,7 @@ async def admin_portal():
                 const input = document.getElementById('check-input').value.trim();
                 if (!input) return alert('Vui lòng nhập username hoặc UID!');
                 const log = document.getElementById('check-log');
-                log.classList.remove('hidden');
+                log.style.display = 'block';
                 log.innerHTML = '⏳ Đang tra cứu RevenueCat...\n';
 
                 try {
